@@ -1,0 +1,7 @@
+Automenta SpaceGraph
+http://automenta.com/spacenet
+
+Requires:
+	Java 1.5+
+	JOGL Native Libraries (some platforms are already included)
+
