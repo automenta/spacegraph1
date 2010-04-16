@@ -38,7 +38,7 @@ import com.ardor3d.framework.NativeCanvas;
 import com.ardor3d.framework.Scene;
 import com.ardor3d.framework.Updater;
 import com.ardor3d.framework.jogl.JoglCanvas;
-import com.ardor3d.image.Image.Format;
+import com.ardor3d.image.TextureStoreFormat;
 import com.ardor3d.image.util.AWTImageLoader;
 import com.ardor3d.image.util.ScreenShotImageExporter;
 import com.ardor3d.input.ControllerWrapper;
@@ -87,7 +87,7 @@ import java.awt.event.ComponentAdapter;
 import javax.media.opengl.GLException;
 import javolution.context.ConcurrentContext;
 
-abstract public class ArdorSpacetime extends Space implements Runnable, Updater, Scene, Exit, Spacetime {
+@Deprecated abstract public class ArdorSpacetime extends Space implements Runnable, Updater, Scene, Exit, Spacetime {
 
     private static final Logger logger = Logger.getLogger(ArdorSpacetime.class.getName());
     protected Color backgroundColor = new Color(Color.GRAY);
@@ -136,7 +136,7 @@ abstract public class ArdorSpacetime extends Space implements Runnable, Updater,
         return _mouseManager;
     }
 
-    protected void delay(double s) {
+    public static synchronized void delay(double s) {
         try {
             Thread.sleep((long) (s * 1000.0));
         } catch (InterruptedException ex) {
@@ -174,10 +174,10 @@ abstract public class ArdorSpacetime extends Space implements Runnable, Updater,
     @Deprecated public void exit() {
         _exit = true;
     }
+
     public void stop() {
         exit();
     }
-
 
     @Override public LogicalLayer getInputLogic() {
         return logicalLayer;
@@ -194,7 +194,7 @@ abstract public class ArdorSpacetime extends Space implements Runnable, Updater,
                     try {
                         getVideo().getCanvasRenderer().getRenderer().setBackgroundColor(backgroundColor);
                     } catch (GLException e) {
-                        e.printStackTrace();                        
+                        e.printStackTrace();
                     }
                 }
             }
@@ -207,7 +207,7 @@ abstract public class ArdorSpacetime extends Space implements Runnable, Updater,
         int numProcs = Runtime.getRuntime().availableProcessors();
         System.out.println("Num processors: " + numProcs);
         ConcurrentContext.setConcurrency(numProcs);
-        
+
 
         initInput();
 
@@ -249,7 +249,7 @@ abstract public class ArdorSpacetime extends Space implements Runnable, Updater,
         defaultLight.setAttenuate(true);
         defaultLight.setLinear(0.003f);
         defaultLight.setQuadratic(0.001f);
-        
+
         defaultLight.setEnabled(true);
 
         /** Attach the light to a lightState and the lightState to rootNode. */
@@ -316,17 +316,16 @@ abstract public class ArdorSpacetime extends Space implements Runnable, Updater,
             getSky().updateGeometricState(timer.getTimePerFrame(), true);
             getRoot().updateGeometricState(timer.getTimePerFrame(), true);
             getFace().updateGeometricState(timer.getTimePerFrame(), true);
-        }
-        finally {
+        } finally {
             ConcurrentContext.exit();
         }
     }
 
     protected void updateLights() {
         defaultLight.setLocation(getCamera().getCurrentPosition());
-        
+
     }
-    
+
 //    public static void updateLater(final Runnable r) {
 //
 //        GameTaskQueueManager.getManager(_canvas.getCanvasRenderer().getRenderContext()).getQueue(GameTaskQueue.UPDATE).enqueue(new Callable() {
@@ -335,7 +334,6 @@ abstract public class ArdorSpacetime extends Space implements Runnable, Updater,
 //            }
 //        });
 //    }
-
     protected void updateLogicalLayer(final ReadOnlyTimer timer) {
         // check and execute any input triggers, if we are concerned with input
         if (logicalLayer != null) {
@@ -396,7 +394,7 @@ abstract public class ArdorSpacetime extends Space implements Runnable, Updater,
 
         if (_showDepth) {
             renderer.renderBuckets();
-            Debugger.drawBuffer(Format.Depth16, Debugger.NORTHEAST, renderer);
+            Debugger.drawBuffer(TextureStoreFormat.Depth16, Debugger.NORTHEAST, renderer);
         }
     }
 
@@ -437,6 +435,7 @@ abstract public class ArdorSpacetime extends Space implements Runnable, Updater,
         a.getRoot().add(s);
     }
 
+
     public static ArdorSpacetime newWindow(final Class<? extends ArdorSpacetime> exampleClazz) {
 
         // Ask for properties
@@ -464,11 +463,12 @@ abstract public class ArdorSpacetime extends Space implements Runnable, Updater,
 //            systemModule = new LwjglModule();
 //            TextureRendererFactory.INSTANCE.setProvider(new LwjglTextureRendererProvider());
 //        } else if ("JOGL".equalsIgnoreCase(prefs.getRenderer())) {
-            systemModule = new JoglModule();
-            TextureRendererFactory.INSTANCE.setProvider(new JoglTextureRendererProvider());
+        systemModule = new JoglModule();
+        TextureRendererFactory.INSTANCE.setProvider(new JoglTextureRendererProvider());
 //        }
 
         final Module exampleModule = new AbstractModule() {
+
             @Override
             protected void configure() {
                 bind(ArdorSpacetime.class).to(exampleClazz).in(Scopes.SINGLETON);
@@ -685,6 +685,4 @@ abstract public class ArdorSpacetime extends Space implements Runnable, Updater,
     @Override public DefaultPointer getPointer() {
         return pointer;
     }
-
-
 }

@@ -6,6 +6,7 @@ package automenta.spacenet.space.control.pointer;
 
 import automenta.spacenet.run.ArdorSpacetime;
 import automenta.spacenet.space.Repeat;
+import automenta.spacenet.space.Spacetime;
 import automenta.spacenet.space.control.Draggable;
 import automenta.spacenet.space.control.Pressable;
 import automenta.spacenet.space.control.Tangible;
@@ -55,7 +56,7 @@ public class DefaultPointer extends Repeat implements Pointer {
     private Tangible currentTangible;
     private Pressable currentPress;
     private PickData tangiblePick;
-    private final ArdorSpacetime spacetime;
+    private final Spacetime spacetime;
     private Draggable currentDraggable, beingDragged;
     Vector2 pixelPos = new Vector2();
     final Ray3 pickRay = new Ray3();
@@ -209,7 +210,7 @@ public class DefaultPointer extends Repeat implements Pointer {
 
     }
 
-    public ArdorSpacetime getSpacetime() {
+    public Spacetime getSpacetime() {
         return spacetime;
     }
 
@@ -243,7 +244,7 @@ public class DefaultPointer extends Repeat implements Pointer {
 
     }
 
-    public DefaultPointer(ArdorSpacetime spacetime) {
+    public DefaultPointer(Spacetime spacetime) {
         super();
 
         this.spacetime = spacetime;

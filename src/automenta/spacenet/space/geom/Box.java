@@ -47,6 +47,7 @@ public class Box extends Space implements HasPosition3, HasScale3 {
         move(c.getX(), c.getY(), c.getZ());
     }
 
+
     public static enum BoxShape {
 
         Empty, Cubic, Spheroid

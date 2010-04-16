@@ -16,13 +16,18 @@ import com.ardor3d.scenegraph.Spatial;
  * @author seh
  */
 public class ColorSurface extends MaterialState implements SpaceState  {
-    //private final List<Spatial> spatials = new LinkedList();
     private final ColorRGBA color;
 
     public ColorSurface(ColorRGBA color) {
         super();
-        setMaterialFace(MaterialState.MaterialFace.FrontAndBack);
-        this.color = color;        
+
+        this.color = color;
+
+        setColorMaterialFace(MaterialState.MaterialFace.FrontAndBack);
+        setDiffuse(getColor());
+        //setShininess(0.2f);
+        setColorMaterial(ColorMaterial.Diffuse);
+        //setSpecular(new ColorRGBA(1f, 1f, 1f, 1f));
     }
 
     public ColorSurface(float r, float g, float b) {
@@ -38,23 +43,11 @@ public class ColorSurface extends MaterialState implements SpaceState  {
     }
 
     @Override public void apply(Spatial s) {
-        setDiffuse(color);
-        setShininess(0.2f);
         s.setRenderState(this);
-        //spatials.add(s);
     }
 
     @Override public void unapply(Spatial s) {    }
     
-
-
-//    protected void applyAll() {
-//        for (Spatial s : spatials) {
-//            applyTo(s);
-//        }
-//    }
-
-
     public void color(float r, float g, float b) {
         color.set(r, g, b, 1.0f);
         setDiffuse(color);

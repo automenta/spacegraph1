@@ -5,13 +5,15 @@
 package automenta.spacenet.space.surface;
 
 import automenta.spacenet.space.SpaceState;
-import com.ardor3d.image.Image.Format;
 import com.ardor3d.image.Texture;
 import com.ardor3d.image.Texture2D;
+import com.ardor3d.image.TextureStoreFormat;
 import com.ardor3d.image.util.AWTImageLoader;
 import com.ardor3d.renderer.state.TextureState;
 import com.ardor3d.scenegraph.Spatial;
 import com.ardor3d.util.TextureManager;
+import com.ardor3d.util.resource.ResourceSource;
+import com.ardor3d.util.resource.URLResourceSource;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Logger;
@@ -58,7 +60,7 @@ public class BitmapSurface extends TextureState implements SpaceState {
         texture = new Texture2D();
 
         try {
-            setTexture(TextureManager.load(getUrl(), Texture.MinificationFilter.BilinearNoMipMaps, Format.Guess, true));
+            setTexture(TextureManager.load(new URLResourceSource(getUrl()), Texture.MinificationFilter.BilinearNoMipMaps, TextureStoreFormat.GuessNoCompressedFormat, true));
             getTexture().setWrap(Texture.WrapMode.Repeat);
 
             pixelHeight = getTexture().getImage().getHeight();

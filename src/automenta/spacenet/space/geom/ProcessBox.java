@@ -13,17 +13,13 @@ abstract public class ProcessBox extends Box {
         super(BoxShape.Empty);
     }
 
-
-
-    @Override
-    protected void afterAttached(Spatial newParent) {
+    @Override protected void afterAttached(Spatial newParent) {
         super.afterAttached(newParent);
 
         start();
     }
 
-    @Override
-    protected void beforeDetached(Spatial parent) {
+    @Override protected void beforeDetached(Spatial parent) {
         stop();
         
         super.beforeDetached(parent);

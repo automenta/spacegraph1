@@ -4,8 +4,8 @@
  */
 package automenta.spacenet.space.control.camera;
 
-import automenta.spacenet.run.ArdorSpacetime;
 import automenta.spacenet.space.Repeat;
+import automenta.spacenet.space.Spacetime;
 import automenta.spacenet.space.control.Tangible;
 import automenta.spacenet.space.control.Zoomable;
 import automenta.spacenet.var.scalar.DoubleVar;
@@ -23,7 +23,7 @@ import com.ardor3d.scenegraph.Spatial;
  */
 public class ArdorCamera extends Repeat {
 
-    private final ArdorSpacetime spacetime;
+    private final Spacetime spacetime;
     private Camera cam;
     private V3 targetPosition = new V3();
     private V3 targetTarget = new V3();
@@ -45,7 +45,7 @@ public class ArdorCamera extends Repeat {
     private Vector3 targetLeft = new Vector3();
 
 //    double targetSpeed = 2.0;
-    public ArdorCamera(ArdorSpacetime spacetime, V3 currentPosition, V3 currentTarget, V3 currentUp) {
+    public ArdorCamera(Spacetime spacetime, V3 currentPosition, V3 currentTarget, V3 currentUp) {
         super();
 
         this.near = new DoubleVar(1);

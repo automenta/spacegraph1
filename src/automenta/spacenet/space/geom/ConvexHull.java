@@ -11,6 +11,7 @@ import com.bulletphysics.linearmath.convexhull.HullFlags;
 import com.bulletphysics.linearmath.convexhull.HullLibrary;
 import com.bulletphysics.linearmath.convexhull.HullResult;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.List;
 import javax.vecmath.Vector3f;
 
@@ -25,7 +26,7 @@ public class ConvexHull extends Box {
         mesh.setModelBound(new BoundingSphere());
         add(mesh);
         setPoints(vertices);
-        
+
     }
 
     public void setPoints(List<Vector3f> vertices) {
@@ -35,7 +36,7 @@ public class ConvexHull extends Box {
             center.addLocal(v.x, v.y, v.z);
         }
         center.multiplyLocal(1.0 / vertices.size());
-        
+
         HullDesc hullDesc = new HullDesc(HullFlags.TRIANGLES, vertices.size(), vertices);
         HullResult result = new HullResult();
         hl.createConvexHull(hullDesc, result);
@@ -63,9 +64,12 @@ public class ConvexHull extends Box {
             meshData.getNormalBuffer().put((float) n.y);
             meshData.getNormalBuffer().put((float) n.z);
         }
+
+        IntBuffer i = IntBuffer.allocate(result.numIndices);
         for (int f = 0; f < result.numIndices; f++) {
-            meshData.getIndexBuffer().put(result.indices.get(f));
+            i.put(result.indices.get(f));
         }
+        meshData.setIndexBuffer(i);
 
         meshData.setIndexMode(IndexMode.Triangles);
         mesh.setMeshData(meshData);
@@ -74,5 +78,4 @@ public class ConvexHull extends Box {
 
         hl.releaseResult(result);
     }
-    
 }

@@ -9,6 +9,7 @@ import automenta.spacenet.space.control.camera.ArdorCamera;
 import automenta.spacenet.space.control.pointer.DefaultPointer;
 import automenta.spacenet.var.physical.Color;
 import com.ardor3d.framework.NativeCanvas;
+import com.ardor3d.input.MouseManager;
 import com.ardor3d.input.PhysicalLayer;
 import com.ardor3d.input.logical.InputTrigger;
 import com.ardor3d.input.logical.LogicalLayer;
@@ -34,7 +35,14 @@ public interface Spacetime {
     public void addCondition(InputTrigger t);
     public void removeCondition(InputTrigger t);
 
+    public MouseManager getMouseManager();
+    
+    public Space getRoot();
     public Space getFace();
     public Space getSky();
+    public Space getVolume();
+
+    public void stop();
+
 
 }

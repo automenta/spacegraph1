@@ -4,9 +4,9 @@
  */
 package automenta.spacenet.space.control.pointer;
 
-import automenta.spacenet.run.ArdorSpacetime;
 import automenta.spacenet.space.Repeat;
 import automenta.spacenet.space.SpaceGraphSwingWindow;
+import automenta.spacenet.space.Spacetime;
 import automenta.spacenet.space.control.camera.ArdorCamera;
 import com.ardor3d.bounding.OrientedBoundingBox;
 import com.ardor3d.framework.Canvas;
@@ -28,9 +28,9 @@ import com.google.common.base.Predicate;
 public class DefaultKeyboard extends Repeat {
 
     private double strafeSpeed = 2.0;
-    private final ArdorSpacetime spacetime;
+    private final Spacetime spacetime;
 
-    public DefaultKeyboard(final ArdorSpacetime spacetime, final DefaultPointer pointer) {
+    public DefaultKeyboard(final Spacetime spacetime, final DefaultPointer pointer) {
         super();
         this.spacetime = spacetime;
 
@@ -68,7 +68,7 @@ public class DefaultKeyboard extends Repeat {
 
             public void perform(final Canvas source, final TwoInputStates inputState, final double tpf) {
                 Node currentTouch = pointer.getCurrentTouched();
-                newSwingTree(currentTouch != null ? currentTouch : spacetime);
+                newSwingTree(currentTouch != null ? currentTouch : spacetime.getRoot());
             }
         }));
 
@@ -87,7 +87,7 @@ public class DefaultKeyboard extends Repeat {
 
     public void printTree() {
         System.out.println(this);
-        for (Spatial s : spacetime.getChildren()) {
+        for (Spatial s : spacetime.getRoot().getChildren()) {
             printChild(s, 1);
         }
     }

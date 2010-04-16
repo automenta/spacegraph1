@@ -83,14 +83,17 @@ public class Text3D extends Box {
         double z = 0;
         for (Char3D cb : charBoxes) {
             cb.getPosition().set(x, y, z);
+
             double xs, ys;
-            if (width > height) {
-                xs = cb.getWidth() / width;
-                ys = (cb.getHeight() / cb.getWidth()) * xs;
-            } else {
-                ys = cb.getHeight() / height;
-                xs = (cb.getWidth() / cb.getHeight()) * ys;
-            }
+            xs = cb.getWidth() / width;
+            ys = height; //(cb.getHeight() / cb.getWidth()) * xs;
+
+//            if (width > height) {
+//            } else {
+//                ys = cb.getHeight() / height;
+//                xs = (cb.getWidth() / cb.getHeight()) * ys;
+//            }
+
             double zs = 1.0 / Math.max(cb.getWidth(), cb.getHeight());
             x += xs;
             cb.getScale().set(xs, ys, zs);
@@ -122,7 +125,6 @@ public class Text3D extends Box {
     public double getWidth() {
         return width;
     }
-
 //    /**
 //     * Just a hack that positions the text with its center in the origo (only on
 //     * the X-axis).

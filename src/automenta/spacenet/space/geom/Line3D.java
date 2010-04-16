@@ -47,11 +47,8 @@ public class Line3D extends Space {
         this.b = b;
         this.radialSamples = radialSamples;
         this.radius = new DoubleVar(radius);
-
-
+        
         this.points = Arrays.asList(new Vector3[]{a, b});
-
-
     }
 
     @Override
@@ -128,17 +125,10 @@ public class Line3D extends Space {
             extrusion = new Extrusion("", shape, localPoints, up);
             extrusion.setModelBound(new OrientedBoundingBox());
 
-            MaterialState ms = new MaterialState();
-            ms.setDiffuse(ColorRGBA.WHITE);
-            extrusion.setRenderState(ms);
-
             attachChild(extrusion);
-
-
         } else {
             extrusion.updateGeometry(shape, localPoints, up);
             extrusion.updateModelBound();
-
         }
 
 

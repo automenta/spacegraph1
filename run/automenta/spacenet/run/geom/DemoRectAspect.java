@@ -8,7 +8,7 @@ package automenta.spacenet.run.geom;
 import automenta.spacenet.space.widget.knob.CircleKnob;
 import automenta.spacenet.run.ArdorSpacetime;
 import automenta.spacenet.run.DemoDefaults;
-import automenta.spacenet.run.surface.DemoBitmapSurface;
+import automenta.spacenet.run.old.surface.DemoBitmapSurface;
 import automenta.spacenet.space.geom.ProcessBox;
 import automenta.spacenet.space.geom.Rect;
 import automenta.spacenet.space.geom.Rect.RectShape;

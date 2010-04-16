@@ -99,15 +99,15 @@ public class Space extends Node {
     }
 
     public ColorSurface color(Color c) {
-        ColorSurface oldProperty = (ColorSurface) properties.remove(ColorSurface.class);
-        if (oldProperty != null) {
-            //cs.unApply(this);
-        }
-
         ColorSurface cs = new ColorSurface(c);
         add(cs);
         return cs;
     }
+
+    public ColorSurface color(float r, float g, float b) {
+        return add(new ColorSurface(r, g, b));
+    }
+
 
     @Override
     protected void setParent(Node parent) {
