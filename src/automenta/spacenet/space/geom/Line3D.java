@@ -5,15 +5,15 @@
 package automenta.spacenet.space.geom;
 
 import automenta.spacenet.space.Space;
+import automenta.spacenet.space.WrapsMesh;
 import automenta.spacenet.var.scalar.DoubleVar;
 import automenta.spacenet.var.scalar.DoubleVar.IfDoubleChanges;
 import automenta.spacenet.var.vector.V3;
 import automenta.spacenet.var.vector.V3.IfV3Changes;
 import com.ardor3d.bounding.OrientedBoundingBox;
-import com.ardor3d.math.ColorRGBA;
 import com.ardor3d.math.Vector3;
-import com.ardor3d.renderer.state.MaterialState;
 import com.ardor3d.scenegraph.Line;
+import com.ardor3d.scenegraph.Mesh;
 import com.ardor3d.scenegraph.Spatial;
 import com.ardor3d.scenegraph.shape.Extrusion;
 import java.util.Arrays;
@@ -24,7 +24,7 @@ import java.util.List;
  *
  * @author seh
  */
-public class Line3D extends Space {
+public class Line3D extends Space implements WrapsMesh {
 
     private final V3 a;
     private final V3 b;
@@ -141,5 +141,10 @@ public class Line3D extends Space {
 
     public double getLength() {
         return a.distance(b);
+    }
+
+    @Override
+    public Mesh getWrappedMesh() {
+        return extrusion;
     }
 }

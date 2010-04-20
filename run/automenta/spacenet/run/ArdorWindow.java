@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package automenta.spacenet.run;
 
 import automenta.spacenet.space.Space;
@@ -95,51 +94,31 @@ import javolution.context.ConcurrentContext;
 public class ArdorWindow implements Runnable, Updater, Scene, Spacetime {
 
     private static final Logger logger = Logger.getLogger(ArdorWindow.class.getName());
-
     protected final LogicalLayer inputLogic = new LogicalLayer();
-
     protected PhysicalLayer inputPhy;
-
     protected final Timer timer = new Timer();
     protected final FrameHandler frameHandler = new FrameHandler(timer);
-
     protected DisplaySettings videoSettings;
-
-
     protected LightState lightState;
-
     protected WireframeState wireframeState;
-
     protected volatile boolean _exit = false;
-
     protected static boolean _stereo = false;
-
     protected boolean _showBounds = false;
     protected boolean _showNormals = false;
     protected boolean _showDepth = false;
-
     protected boolean _doShot = false;
-
     protected NativeCanvas canvas;
-
     protected ScreenShotImageExporter _screenShotExp = new ScreenShotImageExporter();
-
     protected MouseManager mouseManager;
-
     protected FirstPersonControl firstPersonControl;
-
     protected Vector3 worldUp = new Vector3(0, 1, 0);
-
     protected static int _minDepthBits = -1;
     protected static int _minAlphaBits = -1;
     protected static int _minStencilBits = -1;
-
     protected Color backgroundColor = new Color(Color.GRAY);
     private ArdorCamera camera;
     private DefaultPointer pointer;
-
     protected final Space root = new Space();
-
     private Space face = new Space();
     private Space sky = new Space();
     private Space volume = new Space();
@@ -150,17 +129,17 @@ public class ArdorWindow implements Runnable, Updater, Scene, Spacetime {
 
         // Convert to DisplayProperties (XXX: maybe merge these classes?)
         final DisplaySettings settings = new DisplaySettings(prefs.getWidth(), prefs.getHeight(), prefs.getDepth(),
-                prefs.getFrequency(),
-                // alpha
-                _minAlphaBits != -1 ? _minAlphaBits : prefs.getAlphaBits(),
-                // depth
-                _minDepthBits != -1 ? _minDepthBits : prefs.getDepthBits(),
-                // stencil
-                _minStencilBits != -1 ? _minStencilBits : prefs.getStencilBits(),
-                // samples
-                prefs.getSamples(),
-                // other
-                prefs.isFullscreen(), _stereo);
+            prefs.getFrequency(),
+            // alpha
+            _minAlphaBits != -1 ? _minAlphaBits : prefs.getAlphaBits(),
+            // depth
+            _minDepthBits != -1 ? _minDepthBits : prefs.getDepthBits(),
+            // stencil
+            _minStencilBits != -1 ? _minStencilBits : prefs.getStencilBits(),
+            // samples
+            prefs.getSamples(),
+            // other
+            prefs.isFullscreen(), _stereo);
 
 
         // get our framework
@@ -176,8 +155,8 @@ public class ArdorWindow implements Runnable, Updater, Scene, Spacetime {
         } else if ("JOGL".equalsIgnoreCase(prefs.getRenderer())) {
             final JoglCanvasRenderer canvasRenderer = new JoglCanvasRenderer(this);
             canvas = new JoglCanvas(canvasRenderer, settings);
-            final JoglCanvas jcanvas = (JoglCanvas)this.canvas;
-            
+            final JoglCanvas jcanvas = (JoglCanvas) this.canvas;
+
             mouseManager = new AwtMouseManager(jcanvas);
 
             inputPhy = new PhysicalLayer(
@@ -208,7 +187,7 @@ public class ArdorWindow implements Runnable, Updater, Scene, Spacetime {
                 frameHandler.updateFrame();
                 Thread.yield();
             }
-            
+
             // grab the graphics context so cleanup will work out.
             canvas.getCanvasRenderer().setCurrentContext();
             quit(canvas.getCanvasRenderer().getRenderer());
@@ -262,15 +241,25 @@ public class ArdorWindow implements Runnable, Updater, Scene, Spacetime {
         final ShadingState shadeState = new ShadingState();
         shadeState.setShadingMode(ShadingMode.Smooth);
         volume.setRenderState(shadeState);
-        
+
         // ---- LIGHTS
         /** Set up a basic, default light. */
         final PointLight light = new PointLight();
-        light.setDiffuse(new ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f));
-        light.setSpecular(new ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f));
-        light.setAmbient(new ColorRGBA(0.5f, 0.5f, 0.5f, 1.0f));
-        light.setLocation(new Vector3(0, 0, 10));        
-        light.setEnabled(true);
+        {
+            light.setDiffuse(new ColorRGBA(0.5f, 0.5f, 0.5f, 0.5f));
+            //light.setSpecular(new ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f));
+            //light.setAmbient(new ColorRGBA(0.5f, 0.5f, 0.5f, 0.5f));
+            light.setLocation(new Vector3(0, 0, 100));
+            light.setEnabled(true);
+        }
+        {
+//            light.setDiffuse(new ColorRGBA(0.75f, 0.75f, 0.75f, 0.75f));
+//            light.setAmbient(new ColorRGBA(0.7f, 0.7f, 0.7f, 0.75f));
+//            light.setLocation(new Vector3(0, 0, 50));
+//            light.setAttenuate(true);
+//            light.setLinear(0.003f);
+//            light.setQuadratic(0.001f);
+        }
 
         /** Attach the light to a lightState and the lightState to rootNode. */
         lightState = new LightState();
@@ -286,13 +275,14 @@ public class ArdorWindow implements Runnable, Updater, Scene, Spacetime {
 
         canvas.setTitle("");
         if (canvas instanceof JoglCanvas) {
-            ((JoglCanvas)canvas).addComponentListener(new ComponentAdapter() {
+            ((JoglCanvas) canvas).addComponentListener(new ComponentAdapter() {
+
                 @Override public void componentResized(ComponentEvent e) {
                     java.awt.Dimension s = e.getComponent().getSize();
                     canvas.getCanvasRenderer().getCamera().resize(s.width, s.height);
                 }
             });
-            ((JoglCanvas)canvas).setResizable(true);
+            ((JoglCanvas) canvas).setResizable(true);
         }
 
         this.camera = new ArdorCamera(this, new V3(0, 0, 4), new V3(0, 0, 0), new V3(0, 1, 0));
@@ -307,7 +297,6 @@ public class ArdorWindow implements Runnable, Updater, Scene, Spacetime {
     }
 
     protected void afterInit() {
-        
     }
 
     @MainThread
@@ -324,8 +313,7 @@ public class ArdorWindow implements Runnable, Updater, Scene, Spacetime {
         updateLogicalLayer(timer);
 
         // Execute updateQueue item
-        GameTaskQueueManager.getManager(canvas.getCanvasRenderer().getRenderContext()).getQueue(GameTaskQueue.UPDATE)
-                .execute();
+        GameTaskQueueManager.getManager(canvas.getCanvasRenderer().getRenderContext()).getQueue(GameTaskQueue.UPDATE).execute();
 
         /** Call simpleUpdate in any derived classes of ExampleBase. */
         updateFrame(timer);
@@ -333,7 +321,6 @@ public class ArdorWindow implements Runnable, Updater, Scene, Spacetime {
         /** Update controllers/render states/transforms/bounds for rootNode. */
         root.updateGeometricState(timer.getTimePerFrame(), true);
     }
-
 
     protected void updateLogicalLayer(final ReadOnlyTimer timer) {
         // check and execute any input triggers, if we are concerned with input
@@ -348,8 +335,7 @@ public class ArdorWindow implements Runnable, Updater, Scene, Spacetime {
     @MainThread
     public boolean renderUnto(final Renderer renderer) {
         // Execute renderQueue item
-        GameTaskQueueManager.getManager(canvas.getCanvasRenderer().getRenderContext()).getQueue(GameTaskQueue.RENDER)
-                .execute(renderer);
+        GameTaskQueueManager.getManager(canvas.getCanvasRenderer().getRenderContext()).getQueue(GameTaskQueue.RENDER).execute(renderer);
 
         // Clean up card garbage such as textures, vbos, etc.
         ContextGarbageCollector.doRuntimeCleanup(renderer);
@@ -403,13 +389,13 @@ public class ArdorWindow implements Runnable, Updater, Scene, Spacetime {
     protected void processPicks(final PrimitivePickResults pickResults) {
         int i = 0;
         while (pickResults.getNumber() > 0
-                && pickResults.getPickData(i).getIntersectionRecord().getNumberOfIntersections() == 0
-                && ++i < pickResults.getNumber()) {
+            && pickResults.getPickData(i).getIntersectionRecord().getNumberOfIntersections() == 0
+            && ++i < pickResults.getNumber()) {
         }
         if (pickResults.getNumber() > i) {
             final PickData pick = pickResults.getPickData(i);
             System.err.println("picked: " + pick.getTargetMesh() + " at: "
-                    + pick.getIntersectionRecord().getIntersectionPoint(0));
+                + pick.getIntersectionRecord().getIntersectionPoint(0));
         } else {
             System.err.println("picked: nothing");
         }
@@ -419,7 +405,6 @@ public class ArdorWindow implements Runnable, Updater, Scene, Spacetime {
         ContextGarbageCollector.doFinalCleanup(renderer);
         canvas.close();
     }
-
 
     protected static PropertiesGameSettings getAttributes(final PropertiesGameSettings settings) {
         // Always show the dialog in these examples.
@@ -446,6 +431,7 @@ public class ArdorWindow implements Runnable, Updater, Scene, Spacetime {
                 dialogRef.set(new PropertiesDialog(settings, dialogImageRef, mainThreadTasks));
             } else {
                 EventQueue.invokeLater(new Runnable() {
+
                     public void run() {
                         dialogRef.set(new PropertiesDialog(settings, dialogImageRef, mainThreadTasks));
                     }
@@ -453,7 +439,7 @@ public class ArdorWindow implements Runnable, Updater, Scene, Spacetime {
             }
         } catch (final Exception e) {
             logger.logp(Level.SEVERE, ExampleBase.class.getClass().toString(), "ExampleBase.getAttributes(settings)",
-                    "Exception", e);
+                "Exception", e);
             return null;
         }
 
@@ -489,26 +475,29 @@ public class ArdorWindow implements Runnable, Updater, Scene, Spacetime {
         firstPersonControl = FirstPersonControl.setupTriggers(inputLogic, worldUp, true);
 
         inputLogic.registerTrigger(new InputTrigger(new MouseButtonClickedCondition(MouseButton.RIGHT),
-                new TriggerAction() {
-                    public void perform(final Canvas source, final TwoInputStates inputStates, final double tpf) {
+            new TriggerAction() {
 
-                        final Vector2 pos = Vector2.fetchTempInstance().set(
-                                inputStates.getCurrent().getMouseState().getX(),
-                                inputStates.getCurrent().getMouseState().getY());
-                        final Ray3 pickRay = new Ray3();
-                        canvas.getCanvasRenderer().getCamera().getPickRay(pos, false, pickRay);
-                        Vector2.releaseTempInstance(pos);
-                        doPick(pickRay);
-                    }
-                }));
+                public void perform(final Canvas source, final TwoInputStates inputStates, final double tpf) {
+
+                    final Vector2 pos = Vector2.fetchTempInstance().set(
+                        inputStates.getCurrent().getMouseState().getX(),
+                        inputStates.getCurrent().getMouseState().getY());
+                    final Ray3 pickRay = new Ray3();
+                    canvas.getCanvasRenderer().getCamera().getPickRay(pos, false, pickRay);
+                    Vector2.releaseTempInstance(pos);
+                    doPick(pickRay);
+                }
+            }));
 
         inputLogic.registerTrigger(new InputTrigger(new KeyPressedCondition(Key.ESCAPE), new TriggerAction() {
+
             public void perform(final Canvas source, final TwoInputStates inputState, final double tpf) {
                 stop();
             }
         }));
 
         inputLogic.registerTrigger(new InputTrigger(new KeyPressedCondition(Key.L), new TriggerAction() {
+
             public void perform(final Canvas source, final TwoInputStates inputState, final double tpf) {
                 lightState.setEnabled(!lightState.isEnabled());
                 // Either an update or a markDirty is needed here since we did not touch the affected spatial directly.
@@ -517,12 +506,14 @@ public class ArdorWindow implements Runnable, Updater, Scene, Spacetime {
         }));
 
         inputLogic.registerTrigger(new InputTrigger(new KeyPressedCondition(Key.F4), new TriggerAction() {
+
             public void perform(final Canvas source, final TwoInputStates inputState, final double tpf) {
                 _showDepth = !_showDepth;
             }
         }));
 
         inputLogic.registerTrigger(new InputTrigger(new KeyPressedCondition(Key.T), new TriggerAction() {
+
             public void perform(final Canvas source, final TwoInputStates inputState, final double tpf) {
                 wireframeState.setEnabled(!wireframeState.isEnabled());
                 // Either an update or a markDirty is needed here since we did not touch the affected spatial directly.
@@ -531,53 +522,60 @@ public class ArdorWindow implements Runnable, Updater, Scene, Spacetime {
         }));
 
         inputLogic.registerTrigger(new InputTrigger(new KeyPressedCondition(Key.B), new TriggerAction() {
+
             public void perform(final Canvas source, final TwoInputStates inputState, final double tpf) {
                 _showBounds = !_showBounds;
             }
         }));
 
         inputLogic.registerTrigger(new InputTrigger(new KeyPressedCondition(Key.N), new TriggerAction() {
+
             public void perform(final Canvas source, final TwoInputStates inputState, final double tpf) {
                 _showNormals = !_showNormals;
             }
         }));
 
         inputLogic.registerTrigger(new InputTrigger(new KeyPressedCondition(Key.F1), new TriggerAction() {
+
             public void perform(final Canvas source, final TwoInputStates inputState, final double tpf) {
                 _doShot = true;
             }
         }));
 
         final Predicate<TwoInputStates> clickLeftOrRight = Predicates.or(new MouseButtonClickedCondition(
-                MouseButton.LEFT), new MouseButtonClickedCondition(MouseButton.RIGHT));
+            MouseButton.LEFT), new MouseButtonClickedCondition(MouseButton.RIGHT));
 
         inputLogic.registerTrigger(new InputTrigger(clickLeftOrRight, new TriggerAction() {
+
             public void perform(final Canvas source, final TwoInputStates inputStates, final double tpf) {
                 System.err.println("clicked: " + inputStates.getCurrent().getMouseState().getClickCounts());
             }
         }));
 
         inputLogic.registerTrigger(new InputTrigger(new MouseButtonPressedCondition(MouseButton.LEFT),
-                new TriggerAction() {
-                    public void perform(final Canvas source, final TwoInputStates inputState, final double tpf) {
-                        if (mouseManager.isSetGrabbedSupported()) {
-                            mouseManager.setGrabbed(GrabbedState.GRABBED);
-                        }
+            new TriggerAction() {
+
+                public void perform(final Canvas source, final TwoInputStates inputState, final double tpf) {
+                    if (mouseManager.isSetGrabbedSupported()) {
+                        mouseManager.setGrabbed(GrabbedState.GRABBED);
                     }
-                }));
+                }
+            }));
         inputLogic.registerTrigger(new InputTrigger(new MouseButtonReleasedCondition(MouseButton.LEFT),
-                new TriggerAction() {
-                    public void perform(final Canvas source, final TwoInputStates inputState, final double tpf) {
-                        if (mouseManager.isSetGrabbedSupported()) {
-                            mouseManager.setGrabbed(GrabbedState.NOT_GRABBED);
-                        }
+            new TriggerAction() {
+
+                public void perform(final Canvas source, final TwoInputStates inputState, final double tpf) {
+                    if (mouseManager.isSetGrabbedSupported()) {
+                        mouseManager.setGrabbed(GrabbedState.NOT_GRABBED);
                     }
-                }));
+                }
+            }));
 
         inputLogic.registerTrigger(new InputTrigger(new AnyKeyCondition(), new TriggerAction() {
+
             public void perform(final Canvas source, final TwoInputStates inputState, final double tpf) {
                 System.out.println("Key character pressed: "
-                        + inputState.getCurrent().getKeyboardState().getKeyEvent().getKeyChar());
+                    + inputState.getCurrent().getKeyboardState().getKeyEvent().getKeyChar());
             }
         }));
 
@@ -586,7 +584,7 @@ public class ArdorWindow implements Runnable, Updater, Scene, Spacetime {
     public LogicalLayer getInputLogic() {
         return inputLogic;
     }
-    
+
     public PhysicalLayer getInputPhy() {
         return inputPhy;
     }
@@ -598,7 +596,7 @@ public class ArdorWindow implements Runnable, Updater, Scene, Spacetime {
     public DefaultPointer getPointer() {
         return pointer;
     }
-    
+
     public Color getBackgroundColor() {
         return backgroundColor;
     }
@@ -623,8 +621,6 @@ public class ArdorWindow implements Runnable, Updater, Scene, Spacetime {
         return root;
     }
 
-
-
     public void addCondition(InputTrigger t) {
         getInputLogic().registerTrigger(t);
     }
@@ -632,7 +628,7 @@ public class ArdorWindow implements Runnable, Updater, Scene, Spacetime {
     public void removeCondition(InputTrigger t) {
         getInputLogic().deregisterTrigger(t);
     }
-    
+
     public static synchronized void delay(double s) {
         try {
             Thread.sleep((long) (s * 1000.0));
@@ -646,5 +642,4 @@ public class ArdorWindow implements Runnable, Updater, Scene, Spacetime {
         }
         return this;
     }
-    
 }

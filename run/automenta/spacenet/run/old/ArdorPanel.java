@@ -6,7 +6,7 @@ package automenta.spacenet.run.old;
 
 import automenta.spacenet.run.ArdorSpacetime;
 import automenta.spacenet.run.ArdorSpacetime;
-import automenta.spacenet.run.old.widget.DemoButton;
+import automenta.spacenet.run.widget.DemoButton;
 import automenta.spacenet.space.geom.ProcessBox;
 import automenta.spacenet.space.video.Exit;
 import com.ardor3d.annotation.MainThread;

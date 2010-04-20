@@ -5,6 +5,7 @@
 
 package automenta.spacenet.space.surface;
 
+import automenta.spacenet.space.WrapsMesh;
 import automenta.spacenet.space.SpaceState;
 import automenta.spacenet.var.physical.Color;
 import com.ardor3d.math.ColorRGBA;
@@ -17,6 +18,7 @@ import com.ardor3d.scenegraph.Spatial;
  */
 public class ColorSurface extends MaterialState implements SpaceState  {
     private final ColorRGBA color;
+    private Spatial currentSpatial;
 
     public ColorSurface(ColorRGBA color) {
         super();
@@ -24,10 +26,10 @@ public class ColorSurface extends MaterialState implements SpaceState  {
         this.color = color;
 
         setColorMaterialFace(MaterialState.MaterialFace.FrontAndBack);
-        setDiffuse(getColor());
-        //setShininess(0.2f);
         setColorMaterial(ColorMaterial.Diffuse);
-        //setSpecular(new ColorRGBA(1f, 1f, 1f, 1f));
+        setDiffuse(getColor());
+        setShininess(0.1f);
+        setSpecular(new ColorRGBA(0.2f, 0.2f, 0.2f, 0.5f));
     }
 
     public ColorSurface(float r, float g, float b) {
@@ -43,7 +45,15 @@ public class ColorSurface extends MaterialState implements SpaceState  {
     }
 
     @Override public void apply(Spatial s) {
+        currentSpatial = s;
         s.setRenderState(this);
+        if (s instanceof WrapsMesh) {
+            try {
+                ((WrapsMesh)s).getWrappedMesh().setSolidColor(getColor());
+            }
+            catch (NullPointerException e) { } 
+        }
+        
     }
 
     @Override public void unapply(Spatial s) {    }
@@ -51,6 +61,8 @@ public class ColorSurface extends MaterialState implements SpaceState  {
     public void color(float r, float g, float b) {
         color.set(r, g, b, 1.0f);
         setDiffuse(color);
+        if (currentSpatial!=null)
+            apply(currentSpatial);
     }
 
     public void color(double r, double g, double b) {
@@ -60,6 +72,8 @@ public class ColorSurface extends MaterialState implements SpaceState  {
     public void color(Color c) {
         color.set(c);
         setDiffuse(color);
+        if (currentSpatial!=null)
+            apply(currentSpatial);
     }
 
 }

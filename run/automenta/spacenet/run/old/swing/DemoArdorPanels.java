@@ -6,7 +6,7 @@ package automenta.spacenet.run.old.swing;
 
 import automenta.spacenet.run.old.story.SwingWindow;
 import automenta.spacenet.run.old.ArdorPanel;
-import automenta.spacenet.run.old.widget.DemoButton;
+import automenta.spacenet.run.widget.DemoButton;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 

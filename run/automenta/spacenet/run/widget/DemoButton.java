@@ -3,10 +3,10 @@
  * and open the template in the editor.
  */
 
-package automenta.spacenet.run.old.widget;
+package automenta.spacenet.run.widget;
 
+import automenta.spacenet.run.ArdorWindow;
 import automenta.spacenet.space.widget.PanningDragRect;
-import automenta.spacenet.run.ArdorSpacetime;
 import automenta.spacenet.run.DemoDefaults;
 import automenta.spacenet.space.geom.ProcessBox;
 import automenta.spacenet.space.widget.button.Button;
@@ -38,6 +38,6 @@ public class DemoButton extends ProcessBox {
 
 
     public static void main(String[] args) {
-        ArdorSpacetime.newWindow(new DemoButton());
+        new ArdorWindow().withVolume(new DemoButton());
     }
 }

@@ -7,6 +7,7 @@ package automenta.spacenet.space.geom;
 import automenta.spacenet.space.HasPosition3;
 import automenta.spacenet.space.HasScale2;
 import automenta.spacenet.space.Space;
+import automenta.spacenet.space.WrapsMesh;
 import automenta.spacenet.var.physical.Color;
 import automenta.spacenet.var.scalar.DoubleVar;
 import automenta.spacenet.var.scalar.DoubleVar.IfDoubleChanges;
@@ -19,6 +20,7 @@ import automenta.spacenet.var.vector.V3.IfV3Changes;
 import com.ardor3d.bounding.OrientedBoundingBox;
 import com.ardor3d.math.Ray3;
 import com.ardor3d.math.Vector3;
+import com.ardor3d.scenegraph.Mesh;
 import com.ardor3d.scenegraph.Spatial;
 import com.ardor3d.scenegraph.shape.Disk;
 import com.ardor3d.scenegraph.shape.Quad;
@@ -29,9 +31,9 @@ import java.util.List;
  *
  * @author seh
  */
-public class Rect extends Space implements HasPosition3, HasScale2 {
+public class Rect extends Space implements HasPosition3, HasScale2, WrapsMesh {
 
-    Spatial shapeSpatial;
+    Mesh shapeSpatial;
     private final V3 position;
     private final V2 scale;
     private final Quat ori;
@@ -52,6 +54,11 @@ public class Rect extends Space implements HasPosition3, HasScale2 {
      *  @return if aspect=0, aspect ratio is not specified   */
     public DoubleVar getAspect() {
         return aspect;
+    }
+
+    @Override
+    public Mesh getWrappedMesh() {
+        return shapeSpatial;
     }
 
     public static enum RectShape {

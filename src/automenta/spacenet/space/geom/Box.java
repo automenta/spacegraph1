@@ -14,8 +14,8 @@ import automenta.spacenet.var.vector.V3.IfV3Changes;
 import com.ardor3d.bounding.BoundingSphere;
 import com.ardor3d.bounding.OrientedBoundingBox;
 import com.ardor3d.math.Vector3;
-import com.ardor3d.renderer.Renderer;
 import com.ardor3d.renderer.state.CullState;
+import com.ardor3d.scenegraph.Mesh;
 import com.ardor3d.scenegraph.Spatial;
 import com.ardor3d.scenegraph.shape.Sphere;
 import java.util.LinkedList;
@@ -25,9 +25,9 @@ import java.util.List;
  * TODO rename to BoxSpace?
  * @author seh
  */
-public class Box extends Space implements HasPosition3, HasScale3 {
+public class Box extends Space implements HasPosition3, HasScale3, WrapsMesh {
 
-    Spatial shapeSpatial;
+    Mesh shapeSpatial;
     private final V3 position;
     private final V3 scale;
     private final Quat ori;
@@ -250,5 +250,8 @@ public class Box extends Space implements HasPosition3, HasScale3 {
         applyAspectXY(((Vector3) getWorldScale()), ((Vector3) getWorldTranslation()), getWorldRotation(), getAspectXY().d(), 0, 0, vA);
     }
 
+    public Mesh getWrappedMesh() {
+        return shapeSpatial;
+    }
 
 }

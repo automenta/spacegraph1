@@ -7,7 +7,7 @@
  * under the terms of its license which may be found in the accompanying
  * LICENSE file or at <http://www.ardor3d.com/LICENSE>.
  */
-package automenta.spacenet.run.old.widget;
+package automenta.spacenet.run.widget;
 
 import automenta.spacenet.run.ArdorSpacetime;
 import automenta.spacenet.space.Repeat;

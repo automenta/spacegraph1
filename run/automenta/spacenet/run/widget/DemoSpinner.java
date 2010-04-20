@@ -3,9 +3,9 @@
  * and open the template in the editor.
  */
 
-package automenta.spacenet.run.old.widget;
+package automenta.spacenet.run.widget;
 
-import automenta.spacenet.run.ArdorSpacetime;
+import automenta.spacenet.run.ArdorWindow;
 import automenta.spacenet.run.DemoDefaults;
 import automenta.spacenet.space.geom.ProcessBox;
 import automenta.spacenet.space.widget.slider.Slider;
@@ -29,7 +29,7 @@ public class DemoSpinner extends ProcessBox {
     }
 
     public static void main(String[] args) {
-        ArdorSpacetime.newWindow(new DemoSpinner());
+        new ArdorWindow().withVolume(new DemoSpinner());
     }
 
 }

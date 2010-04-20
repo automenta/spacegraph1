@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package automenta.spacenet.run.old.widget;
+package automenta.spacenet.run.widget;
 
 import automenta.spacenet.space.widget.text.TextPanel;
 import automenta.spacenet.run.ArdorSpacetime;

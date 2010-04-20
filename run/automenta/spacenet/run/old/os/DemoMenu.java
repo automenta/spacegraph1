@@ -13,7 +13,7 @@ import automenta.spacenet.space.widget.button.ButtonAction;
 import automenta.spacenet.run.control.ZoomableRect;
 import automenta.spacenet.run.geom.DemoBox;
 import automenta.spacenet.run.geom.DemoRect;
-import automenta.spacenet.run.old.widget.DemoButton;
+import automenta.spacenet.run.widget.DemoButton;
 import automenta.spacenet.space.control.camera.FacesCameraBox;
 import automenta.spacenet.space.geom.Box;
 import automenta.spacenet.space.geom.ProcessBox;

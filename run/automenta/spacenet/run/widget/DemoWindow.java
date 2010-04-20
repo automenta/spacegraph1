@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package automenta.spacenet.run.old.widget;
+package automenta.spacenet.run.widget;
 
 import automenta.spacenet.run.ArdorSpacetime;
 import automenta.spacenet.space.geom.ProcessBox;

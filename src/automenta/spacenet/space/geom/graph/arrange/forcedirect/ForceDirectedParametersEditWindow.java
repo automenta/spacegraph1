@@ -1,6 +1,6 @@
 package automenta.spacenet.space.geom.graph.arrange.forcedirect;
 
-import automenta.spacenet.run.old.widget.DemoButton;
+import automenta.spacenet.run.widget.DemoButton;
 import automenta.spacenet.space.geom.graph.arrange.forcedirect.ForceDirecting.ForceDirectedParameters;
 import automenta.spacenet.space.geom.layout.ColRect;
 import automenta.spacenet.space.geom.layout.RowRect;
